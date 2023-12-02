@@ -3,32 +3,30 @@ import { useRouter } from 'next/router';
 import { Form, Button } from 'react-bootstrap';
 
 function Page() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [age, setAge] = useState('');
-  const [weight, setWeight] = useState('');
+  const [name, setName] = useState('');
+  const [importance, setImportance] = useState('');
+  const [due, setDue] = useState('');
 
   const router = useRouter();
 
-  const sendCreateUserRequest = async () => {
-    const newUser = {
-      firstName: firstName,
-      lastName: lastName,
-      age: age,
-      weight: weight
+  const sendCreateItemRequest = async () => {
+    const newItem = {
+      name: name,
+      importance: importance,
+      due: due,
     };
 
-    const response = await fetch('/api/users', {
+    const response = await fetch('/api/items', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newUser)
+      body: JSON.stringify(newItem)
     });
 
     if (response.ok) {
-      const createdUser = await response.json();
-      console.log(`Created user: ${JSON.stringify(createdUser)}`);
+      const createdItem = await response.json();
+      console.log(`Created item: ${JSON.stringify(createdItem)}`);
 
-      router.push('/users');
+      router.push('/items');
     } else {
       console.error(response);
     }
@@ -36,44 +34,35 @@ function Page() {
 
   return (
     <Form className="mt-3">
-      <Form.Group controlId="first-name">
-        <Form.Label>First Name</Form.Label>
+      <Form.Group controlId="name">
+        <Form.Label>Name</Form.Label>
 
         <Form.Control
           type="text"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
       </Form.Group>
 
-      <Form.Group controlId="last-name" className="mt-3">
-        <Form.Label>Last Name</Form.Label>
+      <Form.Group controlId="importance" className="mt-3">
+        <Form.Label>Importance</Form.Label>
         <Form.Control
           type="text"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
+          value={importance}
+          onChange={(e) => setImportance(e.target.value)}
         />
       </Form.Group>
 
       <Form.Group controlId="age" className="mt-3">
-        <Form.Label>Age</Form.Label>
+        <Form.Label>Due by</Form.Label>
         <Form.Control
           type="text"
-          value={age}
-          onChange={(e) => setAge(e.target.value)}
+          value={due}
+          onChange={(e) => setDue(e.target.value)}
         />
       </Form.Group>
 
-      <Form.Group controlId="weight" className="mt-3">
-        <Form.Label>Weight</Form.Label>
-        <Form.Control
-          type="text"
-          value={weight}
-          onChange={(e) => setWeight(e.target.value)}
-        />
-      </Form.Group>
-
-      <Button className="mt-3" variant="primary" type="button" onClick={sendCreateUserRequest}>
+      <Button className="mt-3" variant="primary" type="button" onClick={sendCreateItemRequest}>
         Submit
       </Button>
     </Form>

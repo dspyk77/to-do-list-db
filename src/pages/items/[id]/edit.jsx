@@ -3,56 +3,53 @@ import { useRouter } from 'next/router';
 import { Form, Button } from 'react-bootstrap';
 
 function Page() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [age, setAge] = useState('');
-  const [weight, setWeight] = useState('');
+  const [name, setName] = useState('');
+  const [importance, setImportance] = useState('');
+  const [due, setDue] = useState('');
 
   const router = useRouter();
   const { id } = router.query;
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const response = await fetch(`/api/users/${id}`, {
+    const fetchItem = async () => {
+      const response = await fetch(`/api/items/${id}`, {
         method: 'GET',
       });
 
       console.log(response);
 
       if (response.ok) {
-        const userData = await response.json();
+        const itemData = await response.json();
 
-        setFirstName(userData.firstName);
-        setLastName(userData.lastName);
-        setAge(userData.age);
-        setWeight(userData.weight);
+        SetName(itemData.name);
+        setImportance(itemData.importance);
+        setDue(itemData.due);
       } else {
         console.error(response);
       }
     };
 
-    fetchUser();
+    fetchItem();
   }, [id]);
 
-  const sendUpdateUserRequest = async () => {
-    const updatedUser = {
-      firstName: firstName,
-      lastName: lastName,
-      age: age,
-      weight: weight
+  const sendUpdateItemRequest = async () => {
+    const updatedItem = {
+      name: name,
+      importance: importance,
+      due: due
     };
 
-    const response = await fetch(`/api/users/${id}`, {
+    const response = await fetch(`/api/items/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updatedUser)
+      body: JSON.stringify(updatedItem)
     });
 
     if (response.ok) {
-      const createdUser = await response.json();
-      console.log(`Updated user: ${JSON.stringify(createdUser)}`);
+      const createdItem = await response.json();
+      console.log(`Updated item: ${JSON.stringify(createdItem)}`);
 
-      router.push(`/users/${id}`);
+      router.push(`/items/${id}`);
     } else {
       console.error(response);
     }
@@ -60,44 +57,35 @@ function Page() {
 
   return (
     <Form className="mt-3">
-      <Form.Group controlId="first-name">
-        <Form.Label>First Name</Form.Label>
+      <Form.Group controlId="name">
+        <Form.Label>Name</Form.Label>
 
         <Form.Control
           type="text"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
       </Form.Group>
 
-      <Form.Group controlId="last-name" className="mt-3">
-        <Form.Label>Last Name</Form.Label>
+      <Form.Group controlId="importance" className="mt-3">
+        <Form.Label>Importance</Form.Label>
         <Form.Control
           type="text"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
+          value={importance}
+          onChange={(e) => setImportance(e.target.value)}
         />
       </Form.Group>
 
-      <Form.Group controlId="age" className="mt-3">
-        <Form.Label>Age</Form.Label>
+      <Form.Group controlId="due" className="mt-3">
+        <Form.Label>Due By</Form.Label>
         <Form.Control
           type="text"
-          value={age}
+          value={due}
           onChange={(e) => setAge(e.target.value)}
         />
       </Form.Group>
 
-      <Form.Group controlId="weight" className="mt-3">
-        <Form.Label>Weight</Form.Label>
-        <Form.Control
-          type="text"
-          value={weight}
-          onChange={(e) => setWeight(e.target.value)}
-        />
-      </Form.Group>
-
-      <Button className="mt-3" variant="primary" type="button" onClick={sendUpdateUserRequest}>
+      <Button className="mt-3" variant="primary" type="button" onClick={sendUpdateItemRequest}>
         Submit
       </Button>
     </Form>

@@ -14,14 +14,14 @@ async function getDbConnection() {
     return dbConnection;
   }
 
-  dbConnection = await mysql.createConnection(configuration)
+  dbConnection = await mysql.createConnection(configuration);
   // .then(function(createdConnection) {
   //   dbConnection = createdConnection // This makes it globally available
   // });
 
   await dbConnection.connect();
 
-  console.log("[Initiated database connection]")
+  console.log('[Initiated database connection]');
   return dbConnection;
 }
 

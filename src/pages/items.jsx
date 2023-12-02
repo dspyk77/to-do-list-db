@@ -81,7 +81,7 @@ function Page() {
             <th>ID</th>
             <th>Name</th>
             <th>Importance</th>
-            <th>Due</th>
+            <th>Due By</th>
             <th></th>
           </tr>
         </thead>

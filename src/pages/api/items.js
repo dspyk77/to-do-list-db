@@ -29,7 +29,7 @@ async function handler(req, res) {
     `;
     var values = [item.name, item.importance, item.due];
 
-    await dbConnection.execute(sql, values)
+    await dbConnection.execute(sql, values);
 
     res.status(200).json(item);
     break;

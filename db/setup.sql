@@ -6,7 +6,7 @@ USE myDatabase;
 
 DROP TABLE IF EXISTS items;
 
-CREATE TABLE users (
+CREATE TABLE items (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(255),
   importance VARCHAR(255),

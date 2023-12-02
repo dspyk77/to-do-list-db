@@ -5,14 +5,14 @@ import Link from 'next/link';
 import Spacer from '@/components/spacer';
 
 function Page() {
-  const [user, setUser] = useState({});
+  const [item, setItem] = useState({});
 
   const router = useRouter();
   const { id } = router.query;
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const response = await fetch(`/api/users/${id}`, {
+    const fetchItem = async () => {
+      const response = await fetch(`/api/items/${id}`, {
         method: 'GET',
       });
 
@@ -20,66 +20,62 @@ function Page() {
 
       if (response.ok) {
         // console.log(await response.text());
-        const userData = await response.json();
+        const itemData = await response.json();
 
-        setUser(userData);
+        setItem(itemData);
       } else {
         console.error(response);
       }
     };
 
-    fetchUser();
+    fetchItem();
   }, [id]);
 
   const handleDelete = async () => {
     const confirmation = window.confirm('Are you sure you sure ?');
 
     if (confirmation) {
-      const response = await fetch(`/api/users/${id}`, {
+      const response = await fetch(`/api/items/${id}`, {
         method: 'DELETE'
       });
 
       if (response.ok) {
-        router.push('/users');
+        router.push('/items');
       } else {
         console.error(response);
       }
     }
   };
 
-  if (user == null) return;
+  if (item == null) return;
 
   return (
     <>
-      <h1>User</h1>
+      <h1>Item</h1>
 
-      <Link variant="dark" className="me-auto" href="/users">Back</Link>
+      <Link variant="dark" className="me-auto" href="/items">Back</Link>
 
       <Spacer />
 
       <div>
-        <Link href={`/users/${id}/edit`}>Edit</Link>
+        <Link href={`/items/${id}/edit`}>Edit</Link>
         <span> | </span>
-        <Link href="" onClick={() => handleDelete(user.id)}>Delete</Link>
+        <Link href="" onClick={() => handleDelete(item.id)}>Delete</Link>
       </div>
 
       <Table variant='dark' size="md" responsive striped hover className="show-table">
         <tbody>
           <tr>
-            <th>First Name</th>
-            <td>{user.firstName}</td>
+            <th>Name</th>
+            <td>{item.name}</td>
           </tr>
           <tr>
-            <th>Last Name</th>
-            <td>{user.lastName}</td>
+            <th>Importance</th>
+            <td>{item.importance}</td>
           </tr>
           <tr>
-            <th>Age</th>
-            <td>{user.age}</td>
-          </tr>
-          <tr>
-            <th>Weight</th>
-            <td>{user.weight}</td>
+            <th>Due by</th>
+            <td>{item.due}</td>
           </tr>
         </tbody>
       </Table>
