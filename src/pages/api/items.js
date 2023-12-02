@@ -1,7 +1,7 @@
 import { getDbConnection } from '@/data/db-connection';
 
 async function handler(req, res) {
-  console.log(`[${req.method}] [Users]`);
+  console.log(`[${req.method}] [Items]`);
 
   const dbConnection = await getDbConnection();
 
@@ -9,29 +9,29 @@ async function handler(req, res) {
   case 'GET':
     var results = await dbConnection.execute(`
       SELECT *
-      FROM users
+      FROM items
     `);
 
-    const users = results[0];
+    const items = results[0];
 
-    console.log(users);
-    res.status(200).json(users);
+    console.log(items);
+    res.status(200).json(items);
     break;
 
   case 'POST':
     console.log(req.body);
 
-    const user = req.body;
+    const item = req.body;
 
     var sql = `
-      INSERT INTO users (firstName, lastName, age, weight)
+      INSERT INTO items (name, importance, due)
       VALUES (?, ?, ?, ?)
     `;
-    var values = [user.firstName, user.lastName, user.age, user.weight];
+    var values = [item.name, item.importance, item.due];
 
     await dbConnection.execute(sql, values)
 
-    res.status(200).json(user);
+    res.status(200).json(item);
     break;
 
   default:

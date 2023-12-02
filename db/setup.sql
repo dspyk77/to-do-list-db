@@ -4,12 +4,11 @@ CREATE DATABASE myDatabase;
 
 USE myDatabase;
 
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS items;
 
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  firstName VARCHAR(255),
-  lastName VARCHAR(255),
-  age INT,
-  weight DECIMAL(5,2)
+  name VARCHAR(255),
+  importance VARCHAR(255),
+  due VARCHAR(255),
 );
