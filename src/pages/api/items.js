@@ -1,3 +1,52 @@
+import { getDbConnection } from '@/data/db-connection';
+
+async function handler(req, res) {
+  try {
+    console.log(`[${req.method}] [Items]`);
+
+    const dbConnection = await getDbConnection();
+
+    switch (req.method) {
+    case 'GET':
+      var results = await dbConnection.execute(`
+        SELECT *
+        FROM items
+      `);
+
+      const items = results[0];
+
+      console.log('GET items:', items);
+      res.status(200).json(items);
+      break;
+
+    case 'POST':
+      console.log('POST body:', req.body);
+
+      const item = req.body;
+
+      var sql = `
+        INSERT INTO items (name, importance, due)
+        VALUES (?, ?, ?)
+      `;
+      var values = [item.name, item.importance, item.due];
+
+      await dbConnection.execute(sql, values);
+
+      console.log('Item added:', item);
+      res.status(200).json(item);
+      break;
+
+    default:
+      res.status(400).json({ msg: 'Invalid route' });
+    }
+  } catch (error) {
+    console.error('Error in handler:', error);
+    res.status(500).json({ error: 'Internal Server Error', details: error.stack });
+  }
+}
+
+export default handler;
+
 // import { getDbConnection } from '@/data/db-connection';
 
 // async function handler(req, res) {
@@ -41,36 +90,36 @@
 
 // export default handler;
 
-import { getDbConnection } from '@/data/db-connection';
+// import { getDbConnection } from '@/data/db-connection';
 
-export default class Items {
+// export default class Items {
 
-  // static dbConnection = await getDbConnection();
+//   // static dbConnection = await getDbConnection();
 
-  static async findAll() {
-    const dbConnection = await getDbConnection();
+//   static async findAll() {
+//     const dbConnection = await getDbConnection();
 
-    var results = await dbConnection.execute(`
-      SELECT *
-      FROM items
-    `);
+//     var results = await dbConnection.execute(`
+//       SELECT *
+//       FROM items
+//     `);
 
-    const items = results[0];
+//     const items = results[0];
 
-    return items;
-  }
+//     return items;
+//   }
 
-  static async findById(id) {
-    const dbConnection = await getDbConnection();
+//   static async findById(id) {
+//     const dbConnection = await getDbConnection();
 
-    var results = await dbConnection.execute(`
-      SELECT *
-      FROM items
-      WHERE id = ${id}
-    `);
+//     var results = await dbConnection.execute(`
+//       SELECT *
+//       FROM items
+//       WHERE id = ${id}
+//     `);
 
-    var item = results[0][0];
+//     var item = results[0][0];
 
-    return item;
-  }
-}
+//     return item;
+//   }
+// }
