@@ -1,0 +1,38 @@
+version: "3.9"
+
+networks:
+  default:
+    name: ${COMPOSE_PROJECT_NAME}
+
+services:
+  app:
+    image: node:18.15.0
+    user: node
+    working_dir: /home/node/app
+    ports:
+      - 80:3000
+    volumes:
+      - ./:/home/node/app
+    extra_hosts: # For Linux
+      - host.docker.internal:host-gateway
+    tty: true
+    expose:
+      - 3000
+    command: "npm run dev"
+
+  mysql:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: myDatabase
+      MYSQL_ROOT_PASSWORD: super
+    volumes:
+      - ./db/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+      # Uncomment this line to enable persistence
+      # - mysql:/var/lib/mysql
+
+# Uncomment these lines to enable persistence
+# volumes:
+#   mysql:
