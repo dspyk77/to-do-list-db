@@ -25,7 +25,7 @@ async function handler(req, res) {
 
     var sql = `
       INSERT INTO items (name, importance, due)
-      VALUES (?, ?, ?, ?)
+      VALUES (?, ?, ?)
     `;
     var values = [item.name, item.importance, item.due];
 
