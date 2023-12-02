@@ -16,11 +16,15 @@ function Page() {
       due: due,
     };
 
+    console.log(newItem);
+
     const response = await fetch('/api/items', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newItem)
     });
+
+    console.log(response);
 
     if (response.ok) {
       const createdItem = await response.json();
